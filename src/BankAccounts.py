@@ -57,3 +57,11 @@ class BankAccount:
               cur.execute("insert into account values('"+number+"','"+accType+"','"+minimumBalance+"','"+availableBalance+"','"+totalWd+"','"+noWd+"')")
               cur.execute('commit')
 
+    def lockingAccounts(self):
+         con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
+         cur = con.cursor();  
+         try:
+            cur.execute("create table lockedaccount(accountNumber number references customer(accountNumber),password varchar2(30) not null)")
+         except:
+            print("")
+   
