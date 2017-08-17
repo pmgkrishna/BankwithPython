@@ -2,6 +2,8 @@ import cx_Oracle
 class BankAccount:
     def customerCreation(self,accno):
          #cur.execute("create sequence accountnumber start with '"+strt+"' increment by '"+fnis+"' nocycle nocache;")
+         con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
+         cur = con.cursor();  
          try:
              cur.execute("create table customer(accountNumber number primary key,password varchar2(30) unique,firstName varchar2(30) not null,lastName varchar2(30))")
          except:
@@ -10,12 +12,12 @@ class BankAccount:
          lname=input("enter the last name..")
          passw=input("enter the password to your account..")            
          cur.execute("insert into customer values('"+accno+"','"+passw+"','"+fname+"','"+lname+"')")            
-         cur.execute('select * from customer')
-         res=cur.fetchall()
-         print(res)
-          
+         cur.execute('commit')
+         return (accno,passw)
 
     def addressInsertion(self,number):
+         con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
+         cur = con.cursor();  
          try:
              cur.execute("create table address(accountNumber number references customer(accountNumber),cellno number primary key,streetName varchar2(30) not null,area varchar2(30) not null,district varchar2(30) not null,state varchar2(30) not null,pinCode number not null)")
          except:
@@ -26,14 +28,13 @@ class BankAccount:
          state=input("enter the state of the customer..")
          pincode=input("enter the pincode of your address..")
          cellno=input("enter the cell number of the customer..")
-         accnum=number
-         cur.execute("insert into address values('"+accnum+"','"+cellno+"','"+street+"','"+area+"','"+district+"','"+state+"','"+pincode+"')")
+         cur.execute("insert into address values('"+number+"','"+cellno+"','"+street+"','"+area+"','"+district+"','"+state+"','"+pincode+"')")
          cur.execute('select * from address')
-         result=cur.fetchall()
-         print(result)
-  
+         cur.execute('commit')
+         
     def accountCreation(self,number):
-
+         con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
+         cur = con.cursor();  
          try:
             cur.execute("create table account(accountNumber number references customer(accountNumber),accType varchar2(30),minimumBalance integer not null,availabeBalance integer  not null,maximumWithdrawal integer not null,numberOfWitdrawals integer not null)")
          except:
@@ -46,6 +47,7 @@ class BankAccount:
               availableBalance=str(0);
               noWd=str(0);
               cur.execute("insert into account values('"+number+"','"+accType+"','"+minimumBalance+"','"+availableBalance+"','"+totalWd+"','"+noWd+"')")
+              cur.execute('commit')
          else :
               accType="current"
               totalWd=str(999);
@@ -53,13 +55,5 @@ class BankAccount:
               availableBalance=str(5000);
               noWd=str(0);
               cur.execute("insert into account values('"+number+"','"+accType+"','"+minimumBalance+"','"+availableBalance+"','"+totalWd+"','"+noWd+"')")
-         cur.execute('select * from account')
-         result=cur.fetchall()
-         print(result)
-b=BankAccount()
-con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
-cur = con.cursor();    
-accno=input("enter the accno to your account..")
-b.customerCreation(accno)                     
-b.addressInsertion(accno)
-b.accountCreation(accno)
+              cur.execute('commit')
+
