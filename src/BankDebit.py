@@ -41,11 +41,14 @@ class Debit:
            cur.execute("insert into printstmt values('"+accno+"','"+amt+"','debit','"+bal+"','"+dat+"')")
            cur.execute('commit')   
            print("the amount "+amt+"is debited successfuully...")
+           return 1
          else:
             print("you have reached your withdrawal limit..")
+            return 0
        else:
            print("\t\tinsufficient balance")
            print("\navailable balance"+str(avlbal))
            print("minimum balance of your account"+str(minibal))
            print("the entered amount... "+str(amt))
+           return 0
            

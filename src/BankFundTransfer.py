@@ -17,17 +17,20 @@ class FundTransfer:
        toaccno=input("enter the recipient account number")
        amt=input("enter the amount to transfer...")
        d=Debit()        
-       d.debit(accno,amt)
-       c=Credit()
-       c.credit(toaccno,amt)
-       cur.execute("select sysdate from dual")
-       date=0
-       for res in cur:
-            date=res[0]
-       dat=str(date)     
-       cur.execute("insert into fundtransfer values('"+accno+"','"+amt+"','"+toaccno+"','"+dat+"')")
-       cur.execute("commit")
-       print("amount transfered successfully...")
+       k=d.debit(accno,amt)
+       if(k>0):  
+         c=Credit()
+         c.credit(toaccno,amt)
+         cur.execute("select sysdate from dual")
+         date=0
+         for res in cur:
+              date=res[0]
+         dat=str(date)     
+         cur.execute("insert into fundtransfer values('"+accno+"','"+amt+"','"+toaccno+"','"+dat+"')")
+         cur.execute("commit")
+         print("amount transfered successfully...")
+       else:
+         print("due to low balance the money trasnfer is not commpleted")  
 
 
     
