@@ -3,6 +3,7 @@ from BankAccounts import *
 from BankSignIn import *
 from BankDebit  import *
 from BankCredit  import *
+from BankStatement import *
 #from BankFundTransfer  import*
 from BankClosingAccounts import *
 con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
@@ -57,8 +58,8 @@ while(choice!=3):
                transfer=FundTransfer()
   
              elif(ch==4):
-               bstmt=BankStmt()
- 
+               bstmt=Bankstmt()
+               bstmt.stmt(username)
              elif(ch==5):
                 c=CloseAccount()
                 c.closeaccount(username)

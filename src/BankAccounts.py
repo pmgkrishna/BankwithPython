@@ -3,7 +3,11 @@ class BankAccount:
     def customerCreation(self,accno):
          #cur.execute("create sequence accountnumber start with '"+strt+"' increment by '"+fnis+"' nocycle nocache;")
          con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
-         cur = con.cursor();  
+         cur = con.cursor()
+         try:
+            cur.execute("create table printstmt(accountNumber number references customer(accountNumber),amount number not null,msg varchar2(30),balance number not null,dates varchar2(30) not null)")
+         except:
+            print("")
          try:
              cur.execute("create table customer(accountNumber number primary key,password varchar2(30) unique,firstName varchar2(30) not null,lastName varchar2(30))")
          except:

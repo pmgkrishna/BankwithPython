@@ -35,6 +35,11 @@ class Debit:
            cur.execute("insert into debit values('"+accno+"','"+amt+"','"+dat+"')")
            cur.execute("update account set availabeBalance=availabeBalance-'"+amt+"' where accountNumber='"+accno+"'")
            cur.execute("update account set numberOfWitdrawals=numberOfWitdrawals+'1' where accountNumber='"+accno+"'")
+           cur.execute("select * from account where accountNumber='"+accno+"'")
+           bal="0"
+           for res in cur:
+             bal=str(res[3])
+           cur.execute("insert into printstmt values('"+accno+"','"+amt+"','debit','"+bal+"','"+dat+"')")
            cur.execute('commit')   
            print("the amount "+amt+"is debited successfuully...")
          else:
