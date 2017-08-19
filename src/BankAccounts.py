@@ -1,9 +1,13 @@
 import cx_Oracle
 class BankAccount:
-    def customerCreation(self,accno):
-         #cur.execute("create sequence accountnumber start with '"+strt+"' increment by '"+fnis+"' nocycle nocache;")
+    def customerCreation(self):
          con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
          cur = con.cursor()
+         try:
+           cur.execute("create table sequences(accnumber number not null)")
+           cur.execute("insert into sequences values('11000')")
+         except:
+            print("") 
          try:
             cur.execute("create table printstmt(accountNumber number references customer(accountNumber),amount number not null,msg varchar2(30),balance number not null,dates varchar2(30) not null)")
          except:
@@ -12,12 +16,19 @@ class BankAccount:
              cur.execute("create table customer(accountNumber number primary key,password varchar2(30) unique,firstName varchar2(30) not null,lastName varchar2(30))")
          except:
              print("")
+         cur.execute("select * from sequences")
+         res=cur.fetchall()
+         accno="00000"
+         for row in res:
+           accno=row[0]
          fname=input("enter the first name ...")
          lname=input("enter the last name..")
          passw=input("enter the password to your account..")            
-         cur.execute("insert into customer values('"+accno+"','"+passw+"','"+fname+"','"+lname+"')")            
+         cur.execute("insert into customer values('"+str(accno)+"','"+passw+"','"+fname+"','"+lname+"')")            
+         accnos=str(int(accno)+((int(accno)%3)+5))
+         cur.execute("update sequences set accnumber='"+accnos+"'")
          cur.execute('commit')
-         return (accno,passw)
+         return (str(accno),passw)
 
     def addressInsertion(self,number):
          con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
@@ -33,8 +44,11 @@ class BankAccount:
          pincode=input("enter the pincode of your address..")
          cellno=input("enter the cell number of the customer..")
          cur.execute("insert into address values('"+number+"','"+cellno+"','"+street+"','"+area+"','"+district+"','"+state+"','"+pincode+"')")
-         cur.execute('select * from address')
+         number=str(int(number)+((int(number)%3)+5))
+         cur.execute("update sequences set accnumber='"+number+"'")
          cur.execute('commit')
+
+         
          
     def accountCreation(self,number):
          con = cx_Oracle.connect('SYSTEM/pmgkrishna96')

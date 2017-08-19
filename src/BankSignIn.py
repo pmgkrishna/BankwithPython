@@ -1,5 +1,4 @@
 import cx_Oracle
-
 class SignIn:
     def signIn(self):
         print("\t\t\t\tLogin page\t\t\t\t\t\n\n")

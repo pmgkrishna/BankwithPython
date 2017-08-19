@@ -51,13 +51,12 @@ while(choice!=3):
    
 
    elif(choice=='2'):
-     accno=input("enter the accno to your account..")
      b=BankAccount() 
-     (accountno,passw)=b.customerCreation(accno)
+     (accno,passw)=b.customerCreation()
      b.addressInsertion(accno)
      b.accountCreation(accno)
      print("\naccount is successfully created...")
-     print("\nyour user name is..."+accountno+"\nyour password is...."+passw)
+     print("\nyour user name is..."+accno+"\nyour password is...."+passw)
    elif(choice=='3'):
      b=BankAccount()
      b.lockingAccounts()
