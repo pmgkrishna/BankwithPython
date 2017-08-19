@@ -4,7 +4,7 @@ from BankSignIn import *
 from BankDebit  import *
 from BankCredit  import *
 from BankStatement import *
-#from BankFundTransfer  import*
+from BankFundTransfer  import*
 from BankClosingAccounts import *
 con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
 cur = con.cursor();  
@@ -14,7 +14,41 @@ while(choice!=3):
    print("\n1.admin...\n2.sign up as a new user...\n3.sign in as a existing user...\n4.exit")
    choice=input("\nenter your option")
    if(choice=='1'):          
-     print("")  
+        userName=input("\nEnter the username:")
+        passWord=input("Enter the password:")
+        if(passWord=="admin",userName=="admin"):
+           print("\n\t\t\t\t\twelcome ADMIN\t\t\t\t\t")
+           choice=0
+           while(choice!=3):
+               choice=input("\n1.view locked accounts...\n2.view closed accounts...\n3.logout...\nenter the choice...")
+               if(choice=='1'):          
+                  cur.execute("select * from lockedaccount")
+                  print("\n\t\t\t\t\tLOCKED ACCOUNTS\t\t\t\t\t")
+                  i=int(0)
+                  for res in cur:
+                     i=i+1
+                     rollno=str(res[0])
+                     cur.execute("select * from customer where accountNumber='"+rollno+"'")
+                     for result in cur:
+                        print(str(i)+"."+"name="+str(result[2])+"\taccount number="+str(result[0])+"\tpassword="+str(result[1]))
+                     
+               elif(choice=='2'):
+                  cur.execute("select * from accountclosure")
+                  print("\n\t\t\t\t\tCLOSED ACCOUNTS\t\t\t\t\t")
+                  i=int(0)
+                  for res in cur:
+                     i=i+1
+                     rollno=str(res[0])
+                     cur.execute("select * from customer where accountNumber='"+rollno+"'")
+                     for result in cur:
+                        print(str(i)+"."+"name="+str(result[2])+"\taccount number="+str(result[0])+"\tstatus="+str(result[1]))
+               elif(choice=='3'):
+                  print("logout successfully")
+                  break
+               else:
+                  print("enter the corect option....")
+   
+
    elif(choice=='2'):
      accno=input("enter the accno to your account..")
      b=BankAccount() 
