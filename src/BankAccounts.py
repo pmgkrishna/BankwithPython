@@ -58,6 +58,7 @@ class BankAccount:
               cur.execute('commit')
 
     def lockingAccounts(self):
+        
          con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
          cur = con.cursor();  
          try:
