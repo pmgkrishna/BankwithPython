@@ -9,15 +9,14 @@ class Debit:
             print("")
        
 
-    def debit(self,accno):
+    def debit(self,accno,amt):
        con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
        cur = con.cursor();
        cur.execute("select sysdate from dual")
        date=0
        for res in cur:
             date=res[0]
-       dat=str(date)     
-       amt=input("enter the amount to withdraw...")
+       dat=str(date)
        cur.execute("select * from account where accountNumber='"+accno+"'")
        miniBal=0
        avlbal=0

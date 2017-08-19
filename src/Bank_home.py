@@ -4,15 +4,16 @@ from BankSignIn import *
 from BankDebit  import *
 from BankCredit  import *
 from BankStatement import *
-from BankFundTransfer  import*
+from BankFundTransfer import*
 from BankClosingAccounts import *
+from BankBalance import *
 con = cx_Oracle.connect('SYSTEM/pmgkrishna96')
 cur = con.cursor();  
 attempts=int(3)
 choice=int(0)
 while(choice!=3):   
    print("\n1.admin...\n2.sign up as a new user...\n3.sign in as a existing user...\n4.exit")
-   choice=input("\nenter your option")
+   choice=input("\nenter your option..")
    if(choice=='1'):          
         userName=input("\nEnter the username:")
         passWord=input("Enter the password:")
@@ -62,47 +63,60 @@ while(choice!=3):
      b.lockingAccounts()
      login=SignIn()
      (username,password,retpassw)=login.signIn()
+     print(username)
+     print(password)
+     print(retpassw)
      if(retpassw=="closed"):
         print("your account is already closed...")
         break
      elif(password==retpassw):
         cur.execute("select * from lockedaccount where accountNumber='"+username+"'")
         res=cur.fetchall()
+        lockpassw=0
         for row in res:
            lockpassw=row[1]
-        try:
-         if(password==lockpassw):
+        print(lockpassw)   
+        if(password==str(lockpassw)):
            print("your is locked under bank..")
            break
-        except: 
+        else: 
            attempts=int(3)
            print("login successully..")
-           print("welcome to e-bank system..")
+           cur.execute("select firstname from customer where accountNumber='"+username+"'")
+           result=cur.fetchall()
+           custname=0;
+           for res in result:
+              custname=res[0]              
+           print("\t\t\twelcome "+str(custname)+" to e-bank system\t\t\t\t\t")
            ch=int(1)
-           while(ch!=6):
-             print("1.debit\n2.credit\n3.fund transfer\n4.bank statement\n5.close account\n6.logout")        
-             ch=int(input("enter the choice..\n")) 
-             if(ch==1): 
-               d=Debit()
-               d.debit(username)
+           while(ch!=7):
+             print("\n1.avaiable balance\n2.debit\n3.credit\n4.fund transfer\n5.bank statement\n6.close account\n7.logout")        
+             ch=int(input("\nenter the choice..")) 
+             if(ch==1):
+               bal=Balance()
+               bal.balance(username)
              elif(ch==2): 
+               d=Debit()
+               amt=input("enter the amount to withdraw...")
+               d.debit(username,amt)
+             elif(ch==3): 
                c=Credit()
-               c.credit(username)
-             elif(ch==3):
-               transfer=FundTransfer()
-  
+               amt=input("enter the amount to credit...")     
+               c.credit(username,amt)
              elif(ch==4):
+                f=FundTransfer() 
+                f.fundTransfer(username)
+             elif(ch==5):
                bstmt=Bankstmt()
                bstmt.stmt(username)
-             elif(ch==5):
+             elif(ch==6):
                 c=CloseAccount()
                 c.closeaccount(username)
                 print("your account is closed successfuly")
                 break
-
-             elif(ch==6):
+             elif(ch==7):
                 print("logout successfully..") 
-                break;
+                break;  
              else:
                 print("enter the correct option...")
 
