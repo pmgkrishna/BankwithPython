@@ -63,9 +63,6 @@ while(choice!=3):
      b.lockingAccounts()
      login=SignIn()
      (username,password,retpassw)=login.signIn()
-     print(username)
-     print(password)
-     print(retpassw)
      if(retpassw=="closed"):
         print("your account is already closed...")
         break
@@ -75,7 +72,6 @@ while(choice!=3):
         lockpassw=0
         for row in res:
            lockpassw=row[1]
-        print(lockpassw)   
         if(password==str(lockpassw)):
            print("your is locked under bank..")
            break
