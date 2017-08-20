@@ -9,13 +9,13 @@ class BankAccount:
          except:
             print("") 
          try:
-            cur.execute("create table printstmt(accountNumber number references customer(accountNumber),amount number not null,msg varchar2(30),balance number not null,dates varchar2(30) not null)")
-         except:
-            print("")
-         try:
              cur.execute("create table customer(accountNumber number primary key,password varchar2(30) unique,firstName varchar2(30) not null,lastName varchar2(30))")
          except:
              print("")
+         try:
+            cur.execute("create table printstmt(accountNumber number references customer(accountNumber),amount number not null,msg varchar2(30),balance number not null,dates varchar2(30) not null)")
+         except:
+            print("") 
          cur.execute("select * from sequences")
          res=cur.fetchall()
          accno="00000"
