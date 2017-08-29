@@ -83,33 +83,33 @@ while(choice!=3):
            for res in result:
               custname=res[0]              
            print("\t\t\twelcome "+str(custname)+" to e-bank system\t\t\t\t\t")
-           ch=int(1)
-           while(ch!=7):
+           ch='0'
+           while(ch!='7'):
              print("\n1.avaiable balance\n2.debit\n3.credit\n4.fund transfer\n5.bank statement\n6.close account\n7.logout")        
-             ch=int(input("\nenter the choice..")) 
-             if(ch==1):
+             ch=input("\nenter the choice..") 
+             if(ch=='1'):
                bal=Balance()
                bal.balance(username)
-             elif(ch==2): 
+             elif(ch=='2'): 
                d=Debit()
                amt=input("enter the amount to withdraw...")
                d.debit(username,amt)
-             elif(ch==3): 
+             elif(ch=='3'): 
                c=Credit()
                amt=input("enter the amount to credit...")     
                c.credit(username,amt)
-             elif(ch==4):
+             elif(ch=='4'):
                 f=FundTransfer() 
                 f.fundTransfer(username)
-             elif(ch==5):
+             elif(ch=='5'):
                bstmt=Bankstmt()
                bstmt.stmt(username)
-             elif(ch==6):
+             elif(ch=='6'):
                 c=CloseAccount()
                 c.closeaccount(username)
                 print("your account is closed successfuly")
                 break
-             elif(ch==7):
+             elif(ch=='7'):
                 print("logout successfully..") 
                 break;  
              else:
@@ -119,7 +119,11 @@ while(choice!=3):
         attempts=attempts-1
         print("password is incorect...")
         if(attempts<=0):
-           cur.execute("insert into lockedaccount values('"+username+"','"+retpassw+"')")
+           try:  
+            cur.execute("insert into lockedaccount values('"+username+"','"+retpassw+"')")
+           except:
+              print(str(username) + " is not a account number!please verify it...")
+              break;
            cur.execute("commit")
            print("your account is locked")
            break;

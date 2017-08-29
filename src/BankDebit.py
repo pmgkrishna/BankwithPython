@@ -29,7 +29,7 @@ class Debit:
            nowd=res[5]
        amount=int(amt)
        total=((int(avlbal))-((int(minibal))))
-       if(total>amount):
+       if(total>=amount):
          if((int(nowd)<int(maxwd))): 
            cur.execute("insert into debit values('"+accno+"','"+amt+"','"+dat+"')")
            cur.execute("update account set availabeBalance=availabeBalance-'"+amt+"' where accountNumber='"+accno+"'")

@@ -15,6 +15,10 @@ class BankAccount:
          try:
             cur.execute("create table printstmt(accountNumber number references customer(accountNumber),amount number not null,msg varchar2(30),balance number not null,dates varchar2(30) not null)")
          except:
+            print("")
+         try:
+          cur.execute("create table accountclosure(accountNumber number references customer(accountNumber),closedate varchar2(30) not null)")
+         except:
             print("") 
          cur.execute("select * from sequences")
          res=cur.fetchall()
@@ -22,8 +26,12 @@ class BankAccount:
          for row in res:
            accno=row[0]
          fname=input("enter the first name ...")
+         while(len(fname)!=1):
+          fname=input("first name not to be an empty...")
          lname=input("enter the last name..")
-         passw=input("enter the password to your account..")            
+         passw=input("enter the password to your account..")
+         while(len(passw)!=4):
+          passw=input("enter the password of 4 characters above...")
          cur.execute("insert into customer values('"+str(accno)+"','"+passw+"','"+fname+"','"+lname+"')")            
          accnos=str(int(accno)+((int(accno)%3)+5))
          cur.execute("update sequences set accnumber='"+accnos+"'")
@@ -42,7 +50,11 @@ class BankAccount:
          district=input("enter the district  name..")
          state=input("enter the state of the customer..")
          pincode=input("enter the pincode of your address..")
+         while(len(pincode)!=6):
+          pincode=input("enter the 6 digit pincode only...")
          cellno=input("enter the cell number of the customer..")
+         while(len(cellno)!=10):
+          cellno=input("enter the 10 digit cellphone number only...")
          cur.execute("insert into address values('"+number+"','"+cellno+"','"+street+"','"+area+"','"+district+"','"+state+"','"+pincode+"')")
          number=str(int(number)+((int(number)%3)+5))
          cur.execute("update sequences set accnumber='"+number+"'")
