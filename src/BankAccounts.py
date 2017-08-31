@@ -9,7 +9,7 @@ class BankAccount:
          except:
             print("") 
          try:
-             cur.execute("create table customer(accountNumber number primary key,password varchar2(30) unique,firstName varchar2(30) not null,lastName varchar2(30))")
+             cur.execute("create table customer(accountNumber number primary key,password varchar2(30),firstName varchar2(30) not null,lastName varchar2(30))")
          except:
              print("")
          try:
@@ -26,11 +26,11 @@ class BankAccount:
          for row in res:
            accno=row[0]
          fname=input("enter the first name ...")
-         while(len(fname)!=1):
+         while(len(fname)==0):
           fname=input("first name not to be an empty...")
          lname=input("enter the last name..")
          passw=input("enter the password to your account..")
-         while(len(passw)!=4):
+         while(len(passw)<3):
           passw=input("enter the password of 4 characters above...")
          cur.execute("insert into customer values('"+str(accno)+"','"+passw+"','"+fname+"','"+lname+"')")            
          accnos=str(int(accno)+((int(accno)%3)+5))
